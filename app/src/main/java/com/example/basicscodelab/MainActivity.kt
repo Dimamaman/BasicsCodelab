@@ -4,23 +4,24 @@ import android.os.Bundle
 import android.support.v4.os.IResultReceiver.Default
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -40,98 +41,75 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BasicsCodelabTheme {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colors.secondary)
-                        .padding(24.dp)
-                ) {
-                    ExpandableCard()
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun CustomText() {
-    SelectionContainer {
-        Column {
-            Text(
-                text = "Dinmuhammed",
-                fontSize = 30.sp
-            )
-            DisableSelection {
-                Text(
-                    text = "Mamanov",
-                    fontSize = 30.sp
-                )
-            }
-            Text(
-                text = "Quwatbay uli",
-                fontSize = 30.sp
-            )
-        }
-    }
-}
-
-@Composable
-fun Greeting() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.TopCenter
-    ) {
-        Box(
-            modifier = Modifier.background(Color.Blue),
-            contentAlignment = Alignment.Center
-        ) {
+            val painter = painterResource(id = R.drawable.ic_kermit)
+            val description = "Kermit is playing in snow"
+            val title = "Kermit is playing in snow"
             Box(
                 modifier = Modifier
-                    .width(50.dp)
-                    .height(45.dp)
-                    .background(Color.Green)
-            )
-            Text(text = "I Love Android", fontSize = 40.sp)
+                    .fillMaxWidth(0.5f)
+                    .padding(12.dp)
+            ) {
+                ImageCard(
+                    painter = painter,
+                    title = title,
+                    description = description
+                )
+            }
         }
     }
 }
 
 @Composable
-fun SuperScriptText(
-    normalText: String,
-    normalTextFontSize: TextUnit = MaterialTheme.typography.subtitle1.fontSize,
-    superText: String,
-    superTextFontSize: TextUnit = MaterialTheme.typography.overline.fontSize,
-    superTextFontWeight: FontWeight = FontWeight.Normal,
-    superTextBaselineShift: BaselineShift = BaselineShift.Subscript
+fun ImageCard(
+    painter: Painter,
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier
 ) {
-    Text(buildAnnotatedString {
-        withStyle(
-            style = SpanStyle(
-                fontSize = normalTextFontSize
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(15.dp),
+        elevation = 10.dp
+    ) {
+        Box(modifier = Modifier.height(200.dp)) {
+            Image(
+                painter = painter,
+                contentDescription = description,
+                contentScale = ContentScale.Crop
             )
-        ) {
-            append(normalText)
-        }
-        withStyle(
-            style = SpanStyle(
-                fontSize = superTextFontSize,
-                fontWeight = superTextFontWeight,
-                baselineShift = superTextBaselineShift
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.Black
+                            ),
+                            startY = 400f
+                        )
+                    )
             )
-        ) {
-            append(superText)
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(12.dp),
+                contentAlignment = Alignment.BottomStart
+            ) {
+                Text(
+                    text = title,
+                    style = TextStyle(
+                        color = Color.White,
+                        fontSize = 16.sp
+                    )
+                )
+            }
         }
-    })
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultView() {
-    BasicsCodelabTheme {
-        Column(modifier = Modifier.fillMaxSize()) {
-            SuperScriptText(normalText = "Dima", superText = "Mamanov")
-        }
-    }
+
 }

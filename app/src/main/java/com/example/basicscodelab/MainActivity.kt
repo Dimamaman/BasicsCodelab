@@ -11,6 +11,9 @@ import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SnapshotMutationPolicy
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -37,46 +40,48 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.basicscodelab.ui.ExpandableCard
 import com.example.basicscodelab.ui.theme.BasicsCodelabTheme
+import kotlin.random.Random
 
 @ExperimentalMaterialApi
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.LightGray)
-            ) {
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                color = Color.Green,
-                                fontSize = 50.sp
-                            )
-                        ) {
-                            append("D")
-                        }
-                        append("inmuxamme")
-                        withStyle(
-                            style = SpanStyle(
-                                color = Color.Green,
-                                fontSize = 50.sp
-                            )
-                        ) {
-                            append("D")
-                        }
-                    },
-                    color = Color.White,
-                    fontSize = 30.sp,
-                    fontStyle = FontStyle.Italic,
-                    textAlign = TextAlign.Center,
-                    textDecoration = TextDecoration.Underline
-                )
+            Column(Modifier.fillMaxSize()) {
+                val color = remember {
+                    mutableStateOf(Color.Yellow)
+                }
+                ColorBox(
+                    Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                        .fillMaxSize()) {
+                    color.value = it
+                }
+                Box(modifier = Modifier
+                    .background(color.value)
+                    .weight(1f)
+                    .fillMaxSize())
             }
         }
     }
+}
+
+@Composable
+fun ColorBox(modifier: Modifier = Modifier, updateColor: (Color) -> Unit) {
+    Box(modifier = modifier
+        .background(Color.Red)
+        .clickable {
+            updateColor(
+                Color(
+                    Random.nextFloat(),
+                    Random.nextFloat(),
+                    Random.nextFloat(),
+                    1f
+                )
+            )
+        }
+    )
 }
 
 @Composable

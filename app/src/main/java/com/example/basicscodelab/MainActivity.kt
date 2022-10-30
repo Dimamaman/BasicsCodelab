@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
@@ -25,13 +26,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             LazyColumn {
-                items(10000) {
+                itemsIndexed(
+                    listOf("This ", "is ", "Jetpack ", "Compose")
+                ) { index, item ->
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(11.dp),
-                        text = "Item ${it + 1}",
-                        fontSize = 20.sp,
+                            .padding(12.dp),
+                        text = item,
+                        fontSize = 30.sp,
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold
                     )
